@@ -1,4 +1,4 @@
-const jwt = require("jsonwebbtoken")
+const jwt = require("jsonwebtoken")
 const cfg = require("../config/config")
 
 const create_token = (id, user) => {

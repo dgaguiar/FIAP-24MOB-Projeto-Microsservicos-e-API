@@ -1,5 +1,5 @@
 const { status } = require("express/lib/response")
-const jwt = require("jsonwebbtoken")
+const jwt = require("jsonwebtoken")
 const cfg = require("../config/config")
 
 const auth = (req, res, next) => {
