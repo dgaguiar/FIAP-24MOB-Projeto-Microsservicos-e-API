@@ -16,5 +16,3 @@ app.use("/api/clientes",rotaClientes);
 app.listen(5000, () =>
   console.log(`Servidor on-line`)
 );
-
-//app.listen(4000, ()=> console.log('Servidor online in http://localhost:4000'));

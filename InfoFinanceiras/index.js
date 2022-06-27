@@ -1,39 +1,18 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const mysql = require('mysql');
-const auth = require('./middleware/jwt_verify');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-const cx = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "fiap",
-    port: "3306"
-});
+app.use(express.json());
 
-cx.connect((error, data) => {
-    if(error) {
-        console.error('Conection server is fail -> ${error.stack}} ');
-        return;
-    }
-    console.log('Conection Information -> ${cx.threadId}');
-})
+app.use(cors());
 
-app.post("/api/user/add", auth, (req, res)=> {
-    cx.query("insert into tbclient set?", req.body, (error, results, fields) => {
-        if (error) {
-            res
-            .status(400)
-            .send({output: 'nao foi possivel'});
-        }
+const rotaClientes = require("../InfoFinanceiras/routes/routes");
 
-        res.status(200).send({output: results});
-    })
-});
+app.use("/api/financeiro",rotaClientes);
 
-app.listen(5532, () => console.log("Servidor online na porta 5532"));
+app.listen(5001, () =>
+  console.log(`Servidor on-line`)
+);

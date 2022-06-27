@@ -23,7 +23,7 @@ router.post("/login",(req,res)=>{
 
     console.log(`usuario e senha ${us} - ${ps} `)
     
-    User.findOne({username:us}, (erro, data) => {
+    User.findOne({nomeusuario:us}, (erro, data) => {
 
         console.log(data)
         if(erro) return res.status(400).send({output: 'Find user error'});
@@ -31,7 +31,7 @@ router.post("/login",(req,res)=>{
         console.log(`senha do banco ${data.senha}`)
         bcrypt.compare(ps, data.senha, (error, same)=> {
             if(!same) return res.status(400).send({output: 'Wrong Password'});
-            const token = create_token(data._id, data.user);
+            const token = create_token(data._id, data.nomeusuario);
             const info = new ManagerUser({userid: data._id, username: data.nomeusuario, information: req.headers});
             info.save();
             res.status(200).send({output: 'Authenticated', payload: data, token:token});

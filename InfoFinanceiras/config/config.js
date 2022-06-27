@@ -1,6 +1,6 @@
 const config = () => {
     return {
-        jwt_key: "key_important",
+        jwt_key: "auth_token_key",
         jwr_expires: "5d"
     }
 };
