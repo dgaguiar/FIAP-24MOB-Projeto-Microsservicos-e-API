@@ -5,6 +5,7 @@ const verificaToken = require("../middleware/auth");
 const Cliente = require("../model/user")
 const User = require('../model/user');
 const ManagerUser = require('../model/manageruser');
+const bcrypt = require('bcrypt')
 
 // Function to Get user from DB send ID
 router.get("/",(req,res) => {
@@ -20,14 +21,15 @@ router.post("/login",(req,res)=>{
     const us = req.body.user;
     const ps = req.body.password;
 
-    console.log('${us} - ${ps}')
+    console.log(`usuario e senha ${us} - ${ps} `)
     
     User.findOne({username:us}, (erro, data) => {
+
         console.log(data)
         if(erro) return res.status(400).send({output: 'Find user error'});
         if(!data) return res.status(404).send({output: 'Not Found'});
-
-        bcrypt.compare(ps, data.password, (error, same)=> {
+        console.log(`senha do banco ${data.senha}`)
+        bcrypt.compare(ps, data.senha, (error, same)=> {
             if(!same) return res.status(400).send({output: 'Wrong Password'});
             const token = create_token(data._id, data.user);
             const info = new ManagerUser({userid: data._id, username: data.nomeusuario, information: req.headers});
@@ -38,10 +40,21 @@ router.post("/login",(req,res)=>{
 })
 // Function to send user data to record on DB
 router.post("/cadastro",(req,res) => {
-    const dados = Cliente(req.body);
-    dados.save().then((info)=>{
+    console.log(`Senha ${req.body.senha}`)
+    bcrypt.hash(req.body.senha, 10, (error, hashpass) => {
+        if (error) {
+            console.error(`Bcrypt error -> ${error}`);
+            return res.status(500).send({ message: 'Ocorreu um erro ao tentar criptografar a senha do usuário!' });
+        }
+        req.body.senha = hashpass;
+
+        const dados = Cliente(req.body);
+        dados.save().then((info)=>{
+       
         res.status(201).send({output:`Dados cadastrados`,payload:info})
     }).catch((erro)=>res.status(400).send({erro:`Erro ao tentar cadastrar ${erro}`}));
+    })
+    
 });
 // Function to update user data on DB
 router.put("/atualizar/:id",verificaToken,(req,res)=>{

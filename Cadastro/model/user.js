@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const urldb = "mongodb://admin:123456@127.0.0.1/admin"; // nao criado :(
+const urldb = "mongodb+srv://daianne:Daianne123@cluster0.v354wrt.mongodb.net/?retryWrites=true&w=majority"; // nao criado :(
 mongoose.connect(urldb,{useNewUrlParser: true, useUnifiedTopology: true});
 
 const table = new mongoose.Schema({

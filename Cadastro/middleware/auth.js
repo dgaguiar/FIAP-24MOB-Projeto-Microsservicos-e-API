@@ -10,6 +10,7 @@ const auth = (req, res, next) => {
     }
     jwt.verify(token_created, cfg.jwt_key, (error,data)=> {
         if(error) return res.status(403).send({output:`Problemas com o token -> ${error}`})
+
         req.content = {
             id:data.id,
             user: data.user
