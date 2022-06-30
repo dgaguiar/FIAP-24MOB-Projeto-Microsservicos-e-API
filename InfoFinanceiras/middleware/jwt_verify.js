@@ -9,8 +9,6 @@ const auth = (req, res, next) => {
         return res.status(400).send({output: 'Access denied'})
     }
     jwt.verify(token_created, cfg.jwt_key, (error,data)=> {
-        console.log(`DATA: ${data.user}`)
-        console.log(`ERRO: ${data.id}`)
         if(error){
             return res.status(401).send({output: 'Access denied'});
         }
@@ -18,7 +16,6 @@ const auth = (req, res, next) => {
             id:data.id,
             user: data.user
         }
-        console.log(`NEXT: ${data}`)
         return next();
     });
     

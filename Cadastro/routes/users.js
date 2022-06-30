@@ -63,12 +63,5 @@ router.put("/atualizar/:id",verificaToken,(req,res)=>{
         res.status(200).send({output:`Atualizado`,payload:dados});
     });
 });
-// Function to delete user data on DB
-router.delete("/apagar/:id",verificaToken,(req,res)=>{
-    Cliente.findByIdAndDelete(req.params.id,(erro,dados)=>{
-        if(erro) return res.status(400).send({output:`Erro ao tentar apagar ${erro}`})
-        res.status(204).send({output:`Cliente apagado`})
-    })
-});
 
 module.exports = router;
